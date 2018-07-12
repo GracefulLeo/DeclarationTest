@@ -55,13 +55,20 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         mSwipe.setOnRefreshListener(this);
 
+        getDeclarationsList();
+        return view;
+    }
 
-
+    private void getDeclarationsList () {
         mRespons = operations.getResponses();
         System.out.println(mRespons == null);
-        mDeclarations = mRespons.getItems();
+
+        if (mRespons != null) {
+            mDeclarations = mRespons.getItems();
+        } else {
+
+        }
         initRecyclerView();
-        return view;
     }
 
     private void initRecyclerView() {
@@ -74,6 +81,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onRefresh() {
+        getDeclarationsList();
         onItemsLoadComplete();
     }
 
