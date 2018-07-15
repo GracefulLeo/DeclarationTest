@@ -1,6 +1,9 @@
 package com.example.adventurer.declarationtest.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,21 +16,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.adventurer.declarationtest.IMainActivity;
 import com.example.adventurer.declarationtest.R;
 import com.example.adventurer.declarationtest.adapters.MainRecyclerViewAdapter;
 import com.example.adventurer.declarationtest.model.APIResponse;
 import com.example.adventurer.declarationtest.model.Item;
 import com.example.adventurer.declarationtest.operations.NetworkOperations;
+import com.example.adventurer.declarationtest.utils.PreferenceKeys;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class FavouritesFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     //TAGS
 
     private static final int NUM_COLUMNS = 1;
-    private static final String TAG = "Home Fragment";
+    private static final String TAG = "Favourites fragment";
 
     //Widgets
 
@@ -38,9 +45,10 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     //vars
 
+    private IMainActivity mInterface;
+    private NetworkOperations operations = new NetworkOperations();
     private APIResponse mRespons = new APIResponse();
     private List<Item> mDeclarations = new ArrayList<>();
-    private NetworkOperations operations = new NetworkOperations();
 
     @Nullable
     @Override
@@ -48,27 +56,41 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                              @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView: started.");
 
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_favourites, container, false);
 
         mRecyclerView = view.findViewById(R.id.recycler_view);
         mSwipe = view.findViewById(R.id.swipe_refresh_layout);
 
         mSwipe.setOnRefreshListener(this);
 
-        getDeclarationsList();
+        getFavouritesList();
         return view;
     }
 
-    private void getDeclarationsList() {
-        mRespons = operations.getResponses();
-        System.out.println(mRespons == null);
+    private void getFavouritesList() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        Set<String> savedID = preferences.getStringSet(PreferenceKeys.ID, new HashSet<String>());
 
+        if (mDeclarations != null) {
+            mDeclarations.clear();
+        }
+        List<Item> items = new ArrayList<>();
+        mRespons = operations.getResponses();
         if (mRespons != null) {
-            mDeclarations = mRespons.getItems();
-        } else {
+            items = mRespons.getItems();
+            for (Item item : items) {
+                if (savedID.contains(item.getId())) {
+                    mDeclarations.add(item);
+                }
+            }
+            System.out.println(mDeclarations);
+
+
+            if (mRecyclerViewAdapter == null) {
+                initRecyclerView();
+            }
 
         }
-        initRecyclerView();
     }
 
     private void initRecyclerView() {
@@ -81,12 +103,21 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onRefresh() {
-        getDeclarationsList();
-        onItemsLoadComplete();
+        if (mDeclarations != null) {
+            getFavouritesList();
+            onItemsLoadComplete();
+        }
     }
 
     void onItemsLoadComplete() {
         mRecyclerViewAdapter.notifyDataSetChanged();
         mSwipe.setRefreshing(false);
     }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mInterface = (IMainActivity) getActivity();
+    }
+
 }

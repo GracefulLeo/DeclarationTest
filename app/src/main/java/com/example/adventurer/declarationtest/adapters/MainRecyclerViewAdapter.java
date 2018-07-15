@@ -1,4 +1,4 @@
-package com.example.adventurer.declarationtest;
+package com.example.adventurer.declarationtest.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -10,11 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.adventurer.declarationtest.IMainActivity;
+import com.example.adventurer.declarationtest.R;
 import com.example.adventurer.declarationtest.model.Item;
 
 import java.util.List;
 
-public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerViewAdapter.ViewHolder>{
+public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerViewAdapter.ViewHolder> {
 
     private static final String TAG = "MainRecyclerViewAd";
 
@@ -50,7 +52,8 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
         holder.mCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               mInterface.inflatePreviewSinglePersonInfoFragment(mDeclarations.get(position));
+                Log.d(TAG, "onClick: clicked on: " + mDeclarations.get(position).getFirstname());
+                mInterface.inflatePreviewSinglePersonInfoFragment(mDeclarations.get(position));
             }
         });
     }

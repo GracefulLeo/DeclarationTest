@@ -13,20 +13,4 @@ public class Page {
     @Expose
     private Integer totalItems;
 
-    public Integer getBatchSize() {
-        return batchSize;
-    }
-
-    public void setBatchSize(Integer batchSize) {
-        this.batchSize = batchSize;
-    }
-
-    public Integer getTotalItems() {
-        return totalItems;
-    }
-
-    public void setTotalItems(Integer totalItems) {
-        this.totalItems = totalItems;
-    }
-
 }

@@ -2,4 +2,5 @@
     <string name="app_name">DeclarationTest</string>
     <string name="tag_fragment_home">Home</string>
     <string name="tag_fragment_preview_single_person_info">Preview</string>
+    <string name="tag_fragment_favourites">Favourites</string>
 </resources>

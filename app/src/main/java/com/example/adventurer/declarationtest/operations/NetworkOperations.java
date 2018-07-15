@@ -5,11 +5,10 @@ import android.support.annotation.NonNull;
 import android.widget.Toast;
 
 import com.example.adventurer.declarationtest.model.APIResponse;
-
+import com.example.adventurer.declarationtest.model.Item;
 import com.example.adventurer.declarationtest.utils.App;
 
-
-import java.io.IOException;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,7 +33,7 @@ public class NetworkOperations {
 
             @Override
             public void onFailure(Call<APIResponse> call, Throwable t) {
-                Toast.makeText(mContext, "An error occurred during networking", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext.getApplicationContext(), "An error occurred during networking", Toast.LENGTH_SHORT).show();
             }
         });
         return mRespons;
