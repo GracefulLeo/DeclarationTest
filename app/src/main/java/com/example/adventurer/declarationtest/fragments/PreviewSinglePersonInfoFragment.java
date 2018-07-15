@@ -13,18 +13,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.adventurer.declarationtest.IMainActivity;
+import com.example.adventurer.declarationtest.MainActivity;
 import com.example.adventurer.declarationtest.R;
 import com.example.adventurer.declarationtest.model.Item;
 import com.example.adventurer.declarationtest.utils.PreferenceKeys;
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class PreviewSinglePersonInfoFragment extends Fragment implements View.OnClickListener {
@@ -34,12 +34,12 @@ public class PreviewSinglePersonInfoFragment extends Fragment implements View.On
 
     //widgets
 
-    private TextView mFirstNameTV;
-    private TextView mLastNameTV;
-    private TextView mPlaceOfWorkTV;
-    private TextView mPositionTV;
-    private Button mCheckPDFBtn;
+    private TextView mFirstNameTV, mLastNameTV, mPlaceOfWorkTV, mPositionTV, mCommentTV;
+    private EditText mCommentED;
+    private Button mCheckPDFBtn, mSetCommentBtn;
     private RadioButton mFavouritesBtn;
+
+    //vars
     private Boolean isChecked;
     private Item mDeclaration = new Item();
 
@@ -69,12 +69,17 @@ public class PreviewSinglePersonInfoFragment extends Fragment implements View.On
         mLastNameTV = view.findViewById(R.id.last_name_preview);
         mPlaceOfWorkTV = view.findViewById(R.id.place_of_work_preview);
         mPositionTV = view.findViewById(R.id.position_preview);
+        mCommentTV = view.findViewById(R.id.comment_text_view);
+
+        mCommentED = view.findViewById(R.id.comment_edit_text);
 
         mCheckPDFBtn = view.findViewById(R.id.button_check_pdf);
         mFavouritesBtn = view.findViewById(R.id.button_favourite);
+        mSetCommentBtn = view.findViewById(R.id.add_comment_button);
 
         mCheckPDFBtn.setOnClickListener(this);
         mFavouritesBtn.setOnClickListener(this);
+        mSetCommentBtn.setOnClickListener(this);
 
 
         init();
@@ -87,6 +92,9 @@ public class PreviewSinglePersonInfoFragment extends Fragment implements View.On
         mLastNameTV.setText(mDeclaration.getLastname());
         mPlaceOfWorkTV.setText(mDeclaration.getPlaceOfWork());
         mPositionTV.setText(mDeclaration.getPosition());
+        if (mDeclaration.getComment() != null){
+            mCommentTV.setText(mDeclaration.getComment());
+        }
     }
 
     private void checkIfAdded() {
@@ -126,8 +134,10 @@ public class PreviewSinglePersonInfoFragment extends Fragment implements View.On
                     removeFromFavourites();
                     Toast.makeText(getContext(), "Removed from favourites", Toast.LENGTH_SHORT).show();
                 }
-
                 break;
+            case R.id.add_comment_button:
+                    mCommentTV.setText(mCommentED.getText().toString());
+                    mDeclaration.setComment(mCommentED.getText().toString());
         }
     }
 

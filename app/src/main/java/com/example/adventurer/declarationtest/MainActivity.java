@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.adventurer.declarationtest.fragments.FavouritesFragment;
 import com.example.adventurer.declarationtest.fragments.HomeFragment;

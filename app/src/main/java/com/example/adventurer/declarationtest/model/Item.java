@@ -28,6 +28,8 @@ public class Item implements Parcelable {
     @Expose
     private String linkPDF;
 
+    private String comment;
+
     public Item() {
     }
 
@@ -44,6 +46,7 @@ public class Item implements Parcelable {
         parcel.writeString(placeOfWork);
         parcel.writeString(position);
         parcel.writeString(linkPDF);
+        parcel.writeString(comment);
     }
 
     public static final Creator<Item> CREATOR = new Creator<Item>() {
@@ -87,6 +90,14 @@ public class Item implements Parcelable {
         this.position = position;
     }
 
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
     public String getLinkPDF() {
         return linkPDF;
     }
@@ -98,5 +109,6 @@ public class Item implements Parcelable {
         placeOfWork = in.readString();
         position = in.readString();
         linkPDF = in.readString();
+        comment = in.readString();
     }
 }
